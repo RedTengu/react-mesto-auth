@@ -1,6 +1,3 @@
-// ОГРОМНОЕ спасибо за ценные советы в "Можно лучше"
-// Обязательно воспользуюсь при дальнейшем рефакторинге!
-
 import { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 
