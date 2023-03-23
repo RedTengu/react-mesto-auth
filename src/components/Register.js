@@ -33,7 +33,7 @@ function Register ({ onRegister }) {
 
     onRegister(email, password);
 
-    resetForm();
+    resetForm(); // Временное решение
   }
 
   return (

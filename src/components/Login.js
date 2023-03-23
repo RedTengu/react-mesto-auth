@@ -32,7 +32,7 @@ function Login ({ onLogin }) {
 
     onLogin(email, password);
 
-    resetForm();
+    resetForm(); // Временное решение
   }
 
   return (
