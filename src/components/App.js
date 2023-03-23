@@ -1,3 +1,6 @@
+// ОГРОМНОЕ спасибо за ценные советы в "Можно лучше"
+// Обязательно воспользуюсь при дальнейшем рефакторинге!
+
 import { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 
@@ -138,6 +141,39 @@ function App() {
     }
   }
 
+  // Функция регистрации
+  const handleRegister = (email, password) => {
+    authApi.register(email, password)
+      .then(res => {
+        setIsSuccess(true);
+
+        setIsInfoTooltipOpen(true);
+      })
+      .then(() => {
+        navigate("/sign-in", {replace: true});
+      })
+      .catch(err => {
+        setIsSuccess(false);
+        setIsInfoTooltipOpen(true);
+        console.log(err);
+      })
+  }
+
+  // Функция входа
+  const handleLogin = (email, password) => {
+    authApi.authorization(email, password)
+      .then(res => {
+        if (res.token) {
+          setHeaderEmail(email);
+
+          setLoggedIn(true);
+          localStorage.setItem('token', res.token);
+          navigate("/", {replace: true});
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
   // Функция лайка и дизлайка карточки
   const handleCardLike = (card, isLiked) => {
     api.changeLikeCardStatus(card._id, !isLiked)
@@ -224,18 +260,8 @@ function App() {
           isBurgerClick={isBurgerClick}
           onBurgerClick={handleBurgerClick} />
         <Routes>
-          <Route path="/sign-in" element={
-            <Login 
-              setLoggedIn={setLoggedIn} 
-              setHeaderEmail={setHeaderEmail}
-            />} 
-          />
-          <Route path="/sign-up" element={
-            <Register 
-              setIsSuccess={setIsSuccess}
-              setIsInfoTooltipOpen={setIsInfoTooltipOpen}
-            />} 
-          /> 
+          <Route path="/sign-in" element={<Login onLogin={handleLogin} />} />
+          <Route path="/sign-up" element={<Register onRegister={handleRegister} />} /> 
           <Route path="/" element={
             <ProtectedRoute 
               loggedIn={loggedIn} 

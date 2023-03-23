@@ -1,17 +1,13 @@
 import { useState } from "react";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import FormForAuth from "./FormForAuth";
 
-import authApi from "../utils/authApi";
-
-function Register ({ setIsSuccess, setIsInfoTooltipOpen }) {
+function Register ({ onRegister }) {
   const [formValue, setFormValue] = useState({
     email: '',
     password: ''
   });
-
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
 
@@ -35,20 +31,9 @@ function Register ({ setIsSuccess, setIsInfoTooltipOpen }) {
     
     const { email, password } = formValue;
 
-    authApi.register(email, password)
-      .then(res => {
-        resetForm();
-        setIsSuccess(true);
-        setIsInfoTooltipOpen(true);
-      })
-      .then(() => {
-        navigate("/sign-in", {replace: true});
-      })
-      .catch(err => {
-        setIsSuccess(false);
-        setIsInfoTooltipOpen(true);
-        console.log(err);
-      })
+    onRegister(email, password);
+
+    resetForm();
   }
 
   return (

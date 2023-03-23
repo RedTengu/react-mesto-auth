@@ -1,17 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
 
 import FormForAuth from "./FormForAuth";
 
-import authApi from "../utils/authApi";
-
-function Login ({ setLoggedIn, setHeaderEmail }) {
+function Login ({ onLogin }) {
   const [formValue, setFormValue] = useState({
     email: '',
     password: ''
   });
-
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
 
@@ -35,17 +30,9 @@ function Login ({ setLoggedIn, setHeaderEmail }) {
     
     const { email, password } = formValue;
 
-    authApi.authorization(email, password)
-      .then(res => {
-        if (res.token) {
-          setHeaderEmail(email);
-          resetForm();
-          setLoggedIn(true);
-          localStorage.setItem('token', res.token);
-          navigate("/", {replace: true});
-        }
-      })
-      .catch(err => console.log(err));
+    onLogin(email, password);
+
+    resetForm();
   }
 
   return (
